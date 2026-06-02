@@ -1,0 +1,208 @@
+/* One Last Thing — warm dusk-quiet close-the-day ritual. Ported from the
+   prototype. Entrances animate transform only (opacity stays 1) to avoid the
+   freeze regression. */
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #1a1714;
+  --color-accent: #c98a5c;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-ui: 'Hanken Grotesk', system-ui, sans-serif;
+}
+
+:root {
+  --accent: #c98a5c;
+  --serif: 'Newsreader', Georgia, serif;
+  --ui: 'Hanken Grotesk', system-ui, sans-serif;
+}
+[data-theme='dusk'] {
+  --bg: #1a1714;
+  --bg2: #141110;
+  --surface: #241f1a;
+  --surface2: #2d2620;
+  --line: rgba(255, 235, 210, 0.1);
+  --ink: #efe7da;
+  --dim: #ad9f8e;
+  --faint: #6f6457;
+  --on: #1a1410;
+  --soft: color-mix(in oklab, var(--accent) 18%, transparent);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: radial-gradient(130% 90% at 50% 12%, var(--bg), var(--bg2));
+  color: var(--ink);
+  font-family: var(--ui);
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.8s ease;
+}
+button {
+  font-family: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+.stage {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.word {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+  margin-bottom: clamp(28px, 8vh, 64px);
+}
+.step-dots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.sd {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--surface2);
+  transition: background 0.4s;
+}
+.sd.on {
+  background: var(--accent);
+}
+.h1 {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(30px, 8vw, 42px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+.sub {
+  color: var(--dim);
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0 0 32px;
+  max-width: 330px;
+}
+.big {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(72px, 24vw, 110px);
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 16px 30px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--on);
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 16.5px;
+  box-shadow: 0 12px 30px color-mix(in oklab, var(--accent) 30%, transparent);
+  transition:
+    filter 0.15s,
+    transform 0.1s;
+}
+.cta:hover {
+  filter: brightness(1.06);
+}
+.cta:active {
+  transform: scale(0.97);
+}
+.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  box-shadow: none;
+  margin-top: 12px;
+}
+.field {
+  width: 100%;
+  max-width: 330px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 15px 16px;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  outline: none;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.field:focus {
+  border-color: var(--accent);
+}
+.field::placeholder {
+  color: var(--faint);
+  font-style: italic;
+}
+.corner {
+  position: fixed;
+  top: 18px;
+  inset-inline-end: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--faint);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.corner:hover {
+  color: var(--dim);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
